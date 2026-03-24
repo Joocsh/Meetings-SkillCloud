@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Bell, Calendar as CalendarIcon, Search, X, LogOut, UserCircle2, MessageSquare } from 'lucide-react';
+import { Bell, Calendar as CalendarIcon, Search, X, LogOut, UserCircle2, MessageSquare, AlertTriangle, CheckCircle } from 'lucide-react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -59,6 +59,15 @@ export default function AssociateDashboard() {
   const [editingEventId, setEditingEventId] = useState(null);
   const [eventOrganizerId, setEventOrganizerId] = useState(null);
   const [recurrenceRule, setRecurrenceRule] = useState('none');
+
+  // Custom UI popups
+  const [systemToast, setSystemToast] = useState(null); // { message, type: 'success' | 'error' }
+  const [confirmDialog, setConfirmDialog] = useState(null); // { title, message, onConfirm, onCancel, confirmText }
+
+  const showSystemToast = (message, type = 'success') => {
+    setSystemToast({ message, type });
+    setTimeout(() => setSystemToast(null), 4000);
+  };
   
   // Calendar View State
   const [calendarDate, setCalendarDate] = useState(new Date());
@@ -252,18 +261,20 @@ export default function AssociateDashboard() {
         .eq('id', editingEventId);
       
       if (error) {
-        alert('Error updating meeting: ' + error.message);
+        showSystemToast('Error updating meeting: ' + error.message, 'error');
         return;
       }
+      showSystemToast('Meeting updated successfully.', 'success');
     } else {
       const { error } = await supabase
         .from('meetings')
         .insert([meetingData]);
       
       if (error) {
-        alert('Error creating meeting: ' + error.message);
+        showSystemToast('Error creating meeting: ' + error.message, 'error');
         return;
       }
+      showSystemToast('Meeting scheduled successfully.', 'success');
     }
 
     // Refresh events from DB (as organizer OR participant) with expansion logic
@@ -316,28 +327,38 @@ export default function AssociateDashboard() {
 
   const handleDeleteMeeting = async () => {
     if (editingEventId) {
-      const { error } = await supabase
-        .from('meetings')
-        .delete()
-        .eq('id', editingEventId);
-      
-      if (error) {
-        alert('Error deleting meeting: ' + error.message);
-        return;
-      }
+      setConfirmDialog({
+        title: 'Delete Meeting',
+        message: 'Are you sure you want to delete this meeting? This action cannot be undone.',
+        confirmText: 'Delete Meeting',
+        onConfirm: async () => {
+          setConfirmDialog(null);
+          const { error } = await supabase
+            .from('meetings')
+            .delete()
+            .eq('id', editingEventId);
+          
+          if (error) {
+            showSystemToast('Error deleting meeting: ' + error.message, 'error');
+            return;
+          }
 
-      setEvents(events.filter(e => e.id !== editingEventId));
+          setEvents(events.filter(e => e.id !== editingEventId));
+          showSystemToast('Meeting deleted.', 'success');
 
-      // Send broadcast to update other open browsers
-      if (channelRef.current) {
-        await channelRef.current.send({
-          type: 'broadcast',
-          event: 'refresh_meetings',
-          payload: {},
-        });
-      }
+          // Send broadcast to update other open browsers
+          if (channelRef.current) {
+            await channelRef.current.send({
+              type: 'broadcast',
+              event: 'refresh_meetings',
+              payload: {},
+            });
+          }
 
-      setIsModalOpen(false);
+          setIsModalOpen(false);
+        },
+        onCancel: () => setConfirmDialog(null)
+      });
     }
   };
 
@@ -658,7 +679,7 @@ export default function AssociateDashboard() {
 
       {/* NOTIFICATION CARD (TOP RIGHT) */}
       {activeVisualAlert && (
-        <div className="toast-notification">
+        <div className="toast-notification" style={{ top: systemToast ? '140px' : '72px' }}>
           <div className="toast-icon">
             <Bell size={18} color="#1a73e8" />
           </div>
@@ -672,6 +693,45 @@ export default function AssociateDashboard() {
           <button className="toast-close" onClick={dismissAlert}>
             <X size={16} />
           </button>
+        </div>
+      )}
+
+      {/* SYSTEM TOAST ALERTS */}
+      {systemToast && (
+        <div className="toast-notification" style={{ top: '72px', borderLeftColor: systemToast.type === 'error' ? '#ea4335' : '#34a853' }}>
+          <div className="toast-icon" style={{ background: systemToast.type === 'error' ? '#fce8e6' : '#e6f4ea', color: systemToast.type === 'error' ? '#ea4335' : '#34a853' }}>
+            {systemToast.type === 'success' ? <CheckCircle size={18} /> : <AlertTriangle size={18} />}
+          </div>
+          <div className="toast-content">
+            <h4>{systemToast.type === 'success' ? 'Success' : 'Error'}</h4>
+            <p style={{ whiteSpace: 'pre-line' }}>{systemToast.message}</p>
+          </div>
+          <button className="toast-close" onClick={() => setSystemToast(null)}>
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
+      {/* CONFIRM DIALOG */}
+      {confirmDialog && (
+        <div className="modal-overlay" style={{ zIndex: 1100 }}>
+          <div className="modal-content" style={{ width: '400px' }}>
+            <div className="modal-header" style={{ background: '#ea4335' }}>
+              <h3>{confirmDialog.title}</h3>
+              <button className="close-btn" onClick={confirmDialog.onCancel}><X size={18} /></button>
+            </div>
+            <div className="modal-form">
+              <p style={{ color: '#5f6368', fontSize: '13.5px', whiteSpace: 'pre-line', marginBottom: '24px', lineHeight: '1.5' }}>
+                {confirmDialog.message}
+              </p>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                <button type="button" className="cancel-btn" onClick={confirmDialog.onCancel}>Cancel</button>
+                <button type="button" className="save-btn" style={{ background: '#ea4335' }} onClick={confirmDialog.onConfirm}>
+                  {confirmDialog.confirmText}
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
