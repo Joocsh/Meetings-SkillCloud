@@ -79,7 +79,7 @@ export default function Login() {
         <div className="left-content">
           <div className="logo">
             <img
-              src="/logo_dark.png"
+              src="/logo_white.png"
               alt="SkillCloud Staffing"
               style={{ height: '56px', width: 'auto', objectFit: 'contain', borderRadius: '8px' }}
             />
@@ -103,7 +103,7 @@ export default function Login() {
         <div className="form-container">
           <div className="form-header">
             <img
-              src="/logo.png"
+              src="/logo_color.png"
               alt="SkillCloud Staffing"
               style={{ height: '44px', width: 'auto', objectFit: 'contain', marginBottom: '20px' }}
             />

@@ -390,7 +390,7 @@ export default function Home() {
           <div className="nav-container">
             <div className="logo home-logo" onClick={() => setSelectedAssociate(null)} style={{ cursor: 'pointer' }}>
               <img
-                src="/logo_dark.png"
+                src="/logo_white.png"
                 alt="SkillCloud Staffing"
                 style={{ height: '52px', width: 'auto', objectFit: 'contain', borderRadius: '8px' }}
               />

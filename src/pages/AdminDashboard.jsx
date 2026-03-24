@@ -520,7 +520,7 @@ export default function AdminDashboard() {
         <div className="dash-nav-left">
           <Link to="/" className="dash-logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
             <img
-              src="/logo.png"
+              src="/logo_color.png"
               alt="SkillCloud Staffing"
               style={{ height: '52px', width: 'auto', objectFit: 'contain' }}
             />
