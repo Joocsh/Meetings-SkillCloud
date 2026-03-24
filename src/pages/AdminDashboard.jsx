@@ -172,6 +172,7 @@ export default function AdminDashboard() {
   const [meetingEndTime, setMeetingEndTime] = useState('');
   const [selectedDate, setSelectedDate] = useState(null);
   const [editingEventId, setEditingEventId] = useState(null);
+  const [eventOrganizerId, setEventOrganizerId] = useState(null);
   const [recurrenceRule, setRecurrenceRule] = useState('none'); // 'none', 'daily', 'weekly', 'monthly'
   
   // Calendar View State
@@ -233,6 +234,7 @@ export default function AdminDashboard() {
     setSelectedModalAssociate(null);
     setModalSearch('');
     setEditingEventId(null);
+    setEventOrganizerId(null);
     setRecurrenceRule('none');
     setIsModalOpen(true);
   };
@@ -303,6 +305,7 @@ export default function AdminDashboard() {
     setSelectedSlot(null);
     setSelectedDate(event.start);
     setEditingEventId(event.id);
+    setEventOrganizerId(event.organizer_id);
 
     const pad = (num) => num.toString().padStart(2, '0');
     setMeetingStartTime(`${pad(event.start.getHours())}:${pad(event.start.getMinutes())}`);
@@ -784,7 +787,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="modal-actions" style={{ display: 'flex', justifyContent: editingEventId ? 'space-between' : 'flex-end', width: '100%' }}>
-                {editingEventId && (
+                {(editingEventId && eventOrganizerId === currentUser?.id) && (
                   <button type="button" className="cancel-btn" style={{ color: '#e53e3e', borderColor: '#fc8181', marginRight: 'auto' }} onClick={handleDeleteMeeting}>
                     Delete Record
                   </button>
