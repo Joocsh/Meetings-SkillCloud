@@ -1,0 +1,50 @@
+/* ══════════════════════════════════════════════════════════
+   HOME PAGE — Calendar Dashboard Embed
+   Styles specific to the associate calendar view on Home
+   ══════════════════════════════════════════════════════════ */
+
+/* Container for the full dashboard-style calendar */
+.home-calendar-dashboard {
+  z-index: 20;
+  max-width: 1400px;
+  margin: -20px auto 40px;
+  padding: 0 24px;
+  animation: slideUp 0.3s ease-out;
+  position: relative;
+}
+
+/* Top bar with back button and profile */
+.home-cal-topbar {
+  background: var(--sc-surface, #fff);
+  border: 1px solid var(--sc-border, #e4e8f0);
+  border-bottom: none;
+  border-radius: 16px 16px 0 0;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 -4px 20px rgba(15, 27, 61, 0.06);
+}
+
+.home-cal-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* The savvy-layout inside the home page */
+.home-savvy-layout {
+  border: 1px solid var(--sc-border, #e4e8f0);
+  border-top: 1px solid var(--sc-border-soft, #f0f3f9);
+  border-radius: 0 0 16px 16px;
+  overflow: hidden;
+  height: calc(100vh - 240px);
+  min-height: 500px;
+  box-shadow: 0 12px 30px rgba(15, 27, 61, 0.10);
+  padding: 0 !important;
+}
+
+/* Ensure footer doesn't overlap */
+.home-calendar-dashboard ~ .home-footer {
+  margin-top: 0;
+}
