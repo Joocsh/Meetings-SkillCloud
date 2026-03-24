@@ -39,9 +39,37 @@ export default function NotificationPermissionBar() {
     return () => clearInterval(interval);
   }, [permState]);
 
-  if (!('Notification' in window) || permState === 'granted' || dismissed) {
-    return null;
+  if (!('Notification' in window)) return null;
+
+  if (permState === 'granted') {
+    if (dismissed) return null;
+    return (
+      <div className="notif-permission-alert" style={{ background: '#f0fdf4', color: '#166534', borderColor: '#bbf7d0' }}>
+        <Bell size={16} />
+        <span>Notifications are <strong>enabled</strong>.</span>
+        <button 
+          onClick={() => {
+            new Notification('✅ Test Notification', {
+              body: 'If you see this, meeting alerts will work perfectly!',
+              icon: '/logo_color.png'
+            });
+          }}
+          style={{ background: '#166534', color: 'white' }}
+        >
+          Test Notification
+        </button>
+        <button 
+          onClick={() => setDismissed(true)}
+          style={{ background: 'transparent', color: 'inherit', padding: '4px 8px', fontSize: '16px', border: 'none', cursor: 'pointer', opacity: 0.6 }}
+          title="Dismiss"
+        >
+          ✕
+        </button>
+      </div>
+    );
   }
+
+  if (dismissed) return null;
 
   const handleEnableClick = async () => {
     try {
