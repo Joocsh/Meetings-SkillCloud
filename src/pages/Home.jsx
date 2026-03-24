@@ -390,7 +390,7 @@ export default function Home() {
           <div className="nav-container">
             <div className="logo home-logo" onClick={() => setSelectedAssociate(null)} style={{ cursor: 'pointer' }}>
               <img
-                src="https://jobs.skillcloudstaffing.com/wp-content/uploads/2026/02/logo-optimized.webp"
+                src="/logo.png"
                 alt="SkillCloud Staffing"
                 style={{ height: '52px', width: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
               />

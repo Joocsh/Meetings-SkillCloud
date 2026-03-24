@@ -28,7 +28,7 @@ export default function NotificationPermissionBar() {
           try {
             new Notification('✅ Notifications enabled!', {
               body: 'You will now receive meeting alerts even when on other tabs or apps.',
-              icon: 'https://jobs.skillcloudstaffing.com/wp-content/uploads/2026/02/logo-optimized.webp',
+              icon: '/logo.png',
             });
           } catch(_) {}
           setShowInstructions(false);
@@ -52,7 +52,7 @@ export default function NotificationPermissionBar() {
         try {
           new Notification('✅ Notifications enabled!', {
             body: 'You will now receive meeting alerts even when on other tabs or apps.',
-            icon: 'https://jobs.skillcloudstaffing.com/wp-content/uploads/2026/02/logo-optimized.webp',
+            icon: '/logo.png',
           });
         } catch(_) {}
         setShowInstructions(false);

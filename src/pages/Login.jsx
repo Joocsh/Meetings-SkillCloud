@@ -79,7 +79,7 @@ export default function Login() {
         <div className="left-content">
           <div className="logo">
             <img
-              src="https://jobs.skillcloudstaffing.com/wp-content/uploads/2026/02/logo-optimized.webp"
+              src="/logo.png"
               alt="SkillCloud Staffing"
               style={{ height: '56px', width: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
             />
@@ -103,7 +103,7 @@ export default function Login() {
         <div className="form-container">
           <div className="form-header">
             <img
-              src="https://jobs.skillcloudstaffing.com/wp-content/uploads/2026/02/logo-optimized.webp"
+              src="/logo.png"
               alt="SkillCloud Staffing"
               style={{ height: '44px', width: 'auto', objectFit: 'contain', marginBottom: '20px' }}
             />

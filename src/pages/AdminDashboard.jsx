@@ -520,7 +520,7 @@ export default function AdminDashboard() {
         <div className="dash-nav-left">
           <Link to="/" className="dash-logo" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
             <img
-              src="https://jobs.skillcloudstaffing.com/wp-content/uploads/2026/02/logo-optimized.webp"
+              src="/logo.png"
               alt="SkillCloud Staffing"
               style={{ height: '52px', width: 'auto', objectFit: 'contain' }}
             />

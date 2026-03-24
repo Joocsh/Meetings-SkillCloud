@@ -37,7 +37,7 @@ export function useUpcomingMeetingAlerts(events, alertMinutesBefore = 10) {
 
       const n = new Notification('📅 Meeting Starting Soon', {
         body: `"${event.title}" is ${minutesText}`,
-        icon: 'https://jobs.skillcloudstaffing.com/wp-content/uploads/2026/02/logo-optimized.webp',
+        icon: '/logo.png',
         tag: `meeting-${event.id}`,
         requireInteraction: true,
         silent: false,
