@@ -79,9 +79,9 @@ export default function Login() {
         <div className="left-content">
           <div className="logo">
             <img
-              src="/logo.png"
+              src="/logo_dark.png"
               alt="SkillCloud Staffing"
-              style={{ height: '56px', width: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+              style={{ height: '56px', width: 'auto', objectFit: 'contain', borderRadius: '8px' }}
             />
           </div>
           <div className="headline">
