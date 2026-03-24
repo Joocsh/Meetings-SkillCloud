@@ -31,6 +31,10 @@ const localizer = dateFnsLocalizer({
 
 
 
+// Helper — generate 2-letter initials from a full name
+const getInitials = (name) =>
+  name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : '??';
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(null);
